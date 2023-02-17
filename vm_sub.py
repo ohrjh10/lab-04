@@ -14,10 +14,14 @@ def on_connect(client, userdata, flags, rc):
 
     print("Connected to server (i.e., broker) with result code "+str(rc))
     #replace user with your USC username in all subscriptions
-    client.subscribe("user/ipinfo")
+    client.subscribe("ohr/ipinfo")
+    client.subscribe("ohr/dateinfo")
+    client.subscribe("ohr/timeinfo")
     
     #Add the custom callbacks by indicating the topic and the name of the callback handle
-    client.message_callback_add("user/ipinfo", on_message_from_ipinfo)
+    client.message_callback_add("ohr/ipinfo", on_message_from_ipinfo)
+    client.message_callback_add("ohr/dateinfo", on_message_from_dateinfo)
+    client.message_callback_add("ohr/timeinfo", on_message_from_timeinfo)
 
 
 """This object (functions are objects!) serves as the default callback for 
@@ -31,8 +35,11 @@ def on_message(client, userdata, msg):
 def on_message_from_ipinfo(client, userdata, message):
    print("Custom callback  - IP Message: "+message.payload.decode())
 
+def on_message_from_dateinfo(client, userdata, message):
+   print("Custom callback  - DATE Message: "+message.payload.decode())
 
-
+def on_message_from_timeinfo(client, userdata, message):
+   print("Custom callback  - TIME Message: "+message.payload.decode())
 
 if __name__ == '__main__':
     
